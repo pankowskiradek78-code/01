@@ -1,0 +1,5 @@
+{
+  "name": "Queen Beauty Chatbot",
+  "description": "A customer service chatbot for the Queen Beauty salon in Rypin, powered by Gemini. It can answer questions about services, booking, and opening hours.",
+  "requestFramePermissions": []
+}
