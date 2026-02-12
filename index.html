@@ -1,25 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI0M1QTM3RSI+PHBhdGggZD0iTTIxLjIsNi4zQzE5LjUsNS5xLDE3LDUuNCwxNS4xLDYuNWMtMC.2LTItMi5LTMtNC4xLTIuMmMtMC.5LDAuNS0xLjQsMS44LTEuMSwzLjEgYy0xLjUsMC0zLDAuNi00LjIsMi4xQzQuNCwxMSw0LjYsMTMuNSw2LDE1YzAuNCwwLjQsMC44LDAuNywxLjMsMC45VjIwaDkuNFYxNS55YzAuNS0wLjIsMC45LTAuNSwxLjMtMC45IEMxOS44LDEzLjUsMjAsMTEsMTguNiw5LjVDMjAuNCw4LjYsMjEuNyw3LjgsMjEuMiw2LjN6IE0xMiwzLjhjMC42LTAuMiwxLjIsMC4xLDEuNCwwLjcgYzAuMiwwLjYtMC4xLDEuMi0wLjdsMS44Yy0wLjYsMC4yLTEuMi0wLjEtMS44LTAuN0MxMS4xLDQuNiwxMS40LDQsMTIsMy44eiBNNi44LDEwLjdjLTAuNS0wLjQtMC45LTEtMC4xLTEuNCBjMC40LTAuNSwxLTAuNSwxLjQsMGMwLjUsMC40LDAuNSwxLDAuMSwxLjRDNy40LDExLjEsNi44LDExLjEsNi40LDEwLjd6IE0xNy42LDEwLjdjLTAuNCwwLjUtMSwwLjUtMS40LDAgYy0wLjUtMC44LTAuNS0xLTAuMS0xLjRzMS0wLjUsMS40LDBDMTguMSw5LjcsMTguMSwxMC4zLDE3LjYsMTAuN3oiIC8+PC9zdmc+" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Queen Beauty Chatbot</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Chatbot AI</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+      <circle cx='50' cy='50' r='45' fill='black'/>
+      <text x='50' y='60' font-size='50' text-anchor='middle' fill='gold'>AI</text>
+    </svg>"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React importmap -->
   <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "vite": "https://esm.sh/vite@^7.3.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4"
+  {
+    "imports": {
+      "react": "https://esm.sh/react@19",
+      "react-dom/client": "https://esm.sh/react-dom@19/client"
+    }
   }
-}
-</script>
+  </script>
 </head>
-  <body class="bg-gray-100">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+<body class="bg-black text-white">
+
+  <!-- Root aplikacji React -->
+  <div id="root"></div>
+
+  <!-- Start aplikacji -->
+  <script type="module" src="/index.tsx"></script>
+
+</body>
 </html>
