@@ -8,9 +8,16 @@ import Header from './components/Header';
 import ChatInput from './components/ChatInput';
 import TypingIndicator from './components/TypingIndicator';
 
+const SUGGESTIONS = [
+  'Jakie są godziny otwarcia?',
+  'Czy jest teraz jakaś promocja?',
+  'Ile kosztuje manicure?',
+];
+
 const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -34,6 +41,11 @@ const App: React.FC = () => {
 
   const handleSendMessage = useCallback(async (inputText: string) => {
     if (!inputText.trim()) return;
+
+    // Hide suggestions after the first message is sent
+    if (showSuggestions) {
+      setShowSuggestions(false);
+    }
 
     const userMessage: Message = {
       id: Date.now(),
@@ -62,7 +74,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [showSuggestions]);
 
   return (
     <div className="flex flex-col h-screen max-w-2xl mx-auto bg-white shadow-2xl rounded-lg overflow-hidden font-sans">
@@ -74,6 +86,21 @@ const App: React.FC = () => {
         {isLoading && <TypingIndicator />}
         <div ref={messagesEndRef} />
       </div>
+
+      {showSuggestions && (
+        <div className="p-4 pt-0 flex flex-wrap justify-end gap-2">
+          {SUGGESTIONS.map((suggestion) => (
+            <button
+              key={suggestion}
+              onClick={() => handleSendMessage(suggestion)}
+              className="px-4 py-2 text-sm text-[#C5A37E] bg-white border border-[#C5A37E] rounded-full hover:bg-gray-50 transition-colors"
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+      )}
+
       <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
     </div>
   );
