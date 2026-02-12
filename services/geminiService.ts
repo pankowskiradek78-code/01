@@ -7,7 +7,7 @@ import { SYSTEM_PROMPT } from '../constants';
 const API_KEY = "AIzaSyDQWVSb44iOnyw-5JCBhBGPx5AEaNSKzvw"; 
 // const API_KEY = process.env.API_KEY; // Ta linia będzie używana po udanym teście.
 
-if (!API_KEY || API_KEY === "AIzaSyDQWVSb44iOnyw-5JCBhBGPx5AEaNSKzvw") {
+if (!API_KEY || API_KEY === "TUTAJ_WKLEJ_SWOJ_KLUCZ_API") {
   // Ten błąd będzie widoczny tylko dla dewelopera w konsoli, jeśli klucz API nie zostanie znaleziony.
   console.error("Klucz API nie został wstawiony w pliku services/geminiService.ts. Wklej klucz w odpowiednim miejscu, aby przetestować aplikację.");
   // Zwracamy błąd w interfejsie, aby użytkownik wiedział, co się dzieje.
