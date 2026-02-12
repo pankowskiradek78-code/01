@@ -1,41 +1,43 @@
-import { GoogleGenAI, Chat } from "@google/genai";
 import { SYSTEM_PROMPT } from '../constants';
 
-let chat: Chat | null = null;
-
-function initializeChat(): Chat {
-  // FIX: As per the guidelines, the API key must be obtained exclusively from process.env.API_KEY.
-  // This resolves the TypeScript error 'Property 'env' does not exist on type 'ImportMeta''.
-  const apiKey = "AIzaSyDQWVSb44iOnyw-5JCBhBGPx5AEaNSKzvw";
-
-  if (!apiKey) {
-    // For production deployment, this variable should be set in the hosting provider's settings.
-    throw new Error("API_KEY environment variable not set.");
-  }
-  const ai = new GoogleGenAI({ apiKey });
-  return ai.chats.create({
-    model: 'gemini-3-flash-preview',
-    config: {
-      systemInstruction: SYSTEM_PROMPT,
-    },
-  });
-}
+// Adres URL Twojego serwera pośredniczącego (np. webhooka z make.com)
+// Vite wymaga prefiksu VITE_ dla zmiennych środowiskowych dostępnych w frontendzie
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export async function sendMessageToGemini(message: string): Promise<string> {
-  if (!chat) {
-    chat = initializeChat();
+  if (!BACKEND_URL) {
+    console.error("VITE_BACKEND_URL is not defined. Please set it in your .env.local file for development.");
+    return "Błąd konfiguracji: Brak adresu serwera pośredniczącego. Skontaktuj się z administratorem.";
   }
 
   try {
-    const result = await chat.sendMessage({ message });
-    const text = result.text;
+    const response = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        message: message,
+        // Możesz wysłać systemowy prompt, aby backend go użył
+        systemInstruction: SYSTEM_PROMPT 
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Upewnij się, że backend zwraca pole `text` w odpowiedzi JSON
+    const text = data.text;
+
     if (!text) {
-      return "Przepraszam, nie mogę teraz odpowiedzieć. Spróbuj ponownie.";
+      return "Przepraszam, otrzymałem pustą odpowiedź. Spróbuj ponownie.";
     }
     return text;
   } catch (error) {
-    console.error("Gemini API error:", error);
-    chat = null; // Reset chat session on error
-    return "Wystąpił błąd komunikacji. Proszę spróbować ponownie później.";
+    console.error("Backend communication error:", error);
+    return "Wystąpił błąd komunikacji z serwerem. Proszę spróbować ponownie później.";
   }
 }
