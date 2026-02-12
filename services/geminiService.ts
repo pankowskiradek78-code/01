@@ -1,17 +1,25 @@
 import { GoogleGenAI } from "@google/genai";
 import { SYSTEM_PROMPT } from '../constants';
 
-// Klucz API zostanie automatycznie dostarczony przez środowisko uruchomieniowe.
-const API_KEY = process.env.API_KEY;
+// Poprawny sposób odczytu klucza API w aplikacji Vite.
+// Vite wstrzyknie tutaj wartość z pliku .env podczas budowania.
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 if (!API_KEY) {
-  // Ten błąd będzie widoczny tylko dla dewelopera w konsoli, jeśli klucz API nie zostanie znaleziony.
-  throw new Error("API_KEY is not defined. Please check your environment configuration.");
+  // Ten błąd będzie widoczny w konsoli przeglądarki, jeśli klucz nie zostanie znaleziony.
+  console.error("VITE_API_KEY is not defined. Please check your .env file.");
+  // Zwracamy błąd w interfejsie, aby użytkownik wiedział, co się dzieje.
+  // Nie rzucamy błędu `throw new Error`, aby aplikacja się nie zawiesiła całkowicie.
 }
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+// Inicjalizujemy AI tylko jeśli klucz jest dostępny.
+const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
 
 export async function sendMessageToGemini(message: string): Promise<string> {
+  if (!ai) {
+    return "Błąd konfiguracji: Klucz API nie jest dostępny. Sprawdź, czy został poprawnie skonfigurowany w pliku .env i czy aplikacja została przebudowana.";
+  }
+
   try {
     // Używamy modelu odpowiedniego do zadań tekstowych i konwersacji
     const response = await ai.models.generateContent({
@@ -32,6 +40,7 @@ export async function sendMessageToGemini(message: string): Promise<string> {
 
   } catch (error) {
     console.error("Gemini API communication error:", error);
-    return "Wystąpił błąd podczas komunikacji z asystentem AI. Proszę spróbować ponownie później.";
+    // Zwracamy bardziej szczegółowy błąd, który może pomóc w diagnozie.
+    return `Wystąpił błąd podczas komunikacji z asystentem AI. Proszę spróbować ponownie później. (Szczegóły: ${error.message})`;
   }
 }
